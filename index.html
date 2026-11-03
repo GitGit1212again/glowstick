@@ -1827,6 +1827,7 @@ const __m_js_coupons_js = (() => {
   // Difficulty ramps: the first draw comes on the first trigger, later draws need more triggers each, up to a ceiling.
   const { S, save, uid, today } = __m_js_state_js;
   const { emit } = __m_js_events_js;
+  const { PERSONAL } = __m_data_personal_js;
 
   const TRIGGERS = {
     weekWin: { name: "A week inside every impulse allowance", short: "week won" },
@@ -1841,10 +1842,16 @@ const __m_js_coupons_js = (() => {
     billMonth: { name: "Every bill paid on time in a month", short: "clean bill month" },
   };
   const RAMPS = { none: { step: 0, cap: 1 }, gentle: { step: 1, cap: 3 }, steady: { step: 1, cap: 5 }, steep: { step: 2, cap: 8 } };
-  const DEFAULT_CATS = [
-    { id: "sexy", name: "Sexy time", color: "#ff2fd2" },
+  // The third category and its cards can be replaced by the owner's private build (PERSONAL.couponCats /
+  // PERSONAL.couponCards). The public build has PERSONAL = null and gets the neutral "Rest & recharge" deck.
+  const DEFAULT_CATS = PERSONAL?.couponCats || [
+    { id: "rest", name: "Rest & recharge", color: "#ff2fd2" },
     { id: "food", name: "Food & leisure", color: "#c3ff3d" },
     { id: "gaming", name: "Gaming", color: "#21f0ff" },
+  ];
+  const THIRD_CARDS = PERSONAL?.couponCards || [
+    { title: "Your call tonight", note: "Write your own fine print.", cat: "rest" },
+    { title: "Massage", note: "Twenty minutes. No clock-watching.", cat: "rest" },
   ];
   const DEFAULT_CARDS = [
     { title: "Date night", note: "Dinner out, my pick, my treat.", cat: "food" },
@@ -1854,8 +1861,7 @@ const __m_js_coupons_js = (() => {
     { title: "Gaming night, no interruptions", note: "Three hours. Headset on, door shut.", cat: "gaming" },
     { title: "New game", note: "Up to $30, your pick. Doesn't count against the allowance.", cat: "gaming" },
     { title: "Co-op night", note: "I play what you pick.", cat: "gaming" },
-    { title: "Your call tonight", note: "Write your own fine print.", cat: "sexy" },
-    { title: "Massage", note: "Twenty minutes. No clock-watching.", cat: "sexy" },
+    ...THIRD_CARDS,
     // The wildcard can come up from any category (rarer than a normal card). He names what he wants when he redeems it.
     { title: "Wildcard", note: "Any one thing you want. Name it when you redeem.", cat: "any", wild: true, weight: 0.35 },
   ];
