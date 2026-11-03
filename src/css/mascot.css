@@ -1,0 +1,81 @@
+/* Mascot: a picture (or the built-in glowstick character) slides in from the bottom-right corner with a speech
+   bubble, then slides out. --aura is set per state by ui/mascot.js. */
+.mascot { --aura: var(--pink); position: fixed; right: 6px; bottom: calc(var(--tabs-h) + env(safe-area-inset-bottom, 0px) + 6px); z-index: 80; pointer-events: none; /* above .celebrate (70), .toast (60) and .modal (50) so peeks are never hidden */
+  transform: translate(120%, 30%) rotate(8deg); transition: transform .45s cubic-bezier(.2,1.4,.4,1); filter: drop-shadow(0 0 14px color-mix(in srgb, var(--aura) 45%, transparent)) drop-shadow(0 8px 20px rgba(0,0,0,.6)); }
+.mascot.in { transform: translate(0, 0) rotate(0); }
+.mascot .figure { display: block; transform-origin: 50% 100%; }
+.mascot img { display: block; max-height: 48vh; max-width: 66vw; object-fit: contain; }
+.mascot.builtin .figure { width: 140px; height: 140px; margin-right: 8px; }
+.mascot .stick { display: block; width: 100%; height: 100%; overflow: visible; }
+.mascot.builtin .stick .face { animation: blink 4.2s ease-in-out infinite; transform-origin: 86px 50px; }
+@keyframes blink { 0%, 92%, 100% { transform: translate(0, -4px) scaleY(1); } 95% { transform: translate(0, -4px) scaleY(.15); } }
+/* one motion style per state: a landing bounce, then a loop */
+.mascot.m-bounce .figure { animation: land .6s cubic-bezier(.2,1.5,.4,1), bob 1.2s ease-in-out .6s infinite; }
+.mascot.m-sway .figure   { animation: land .6s cubic-bezier(.2,1.5,.4,1), sway 1.6s ease-in-out .6s infinite; }
+.mascot.m-wiggle .figure { animation: land .6s cubic-bezier(.2,1.5,.4,1), wiggle .9s ease-in-out .6s infinite; }
+.mascot.m-lean .figure   { animation: land .6s cubic-bezier(.2,1.5,.4,1), lean 2s ease-in-out .6s infinite; }
+.mascot.m-nod .figure    { animation: land .6s cubic-bezier(.2,1.5,.4,1), nod 1.4s ease-in-out .6s infinite; }
+.mascot.m-still .figure  { animation: land .6s cubic-bezier(.2,1.5,.4,1); }
+@keyframes land { 0% { transform: translateY(40px) scaleY(.9); } 60% { transform: translateY(-14px) scaleY(1.04); } 100% { transform: translateY(0) scaleY(1); } }
+@keyframes bob { 0%, 100% { transform: translateY(0) rotate(0); } 50% { transform: translateY(-9px) rotate(-1.5deg); } }
+@keyframes sway { 0%, 100% { transform: rotate(-4deg) translateX(-4px); } 50% { transform: rotate(4deg) translateX(4px); } }
+@keyframes wiggle { 0%, 100% { transform: rotate(0) scale(1); } 25% { transform: rotate(-3deg) scale(1.03); } 50% { transform: rotate(0) scale(1); } 75% { transform: rotate(3deg) scale(1.03); } }
+@keyframes lean { 0%, 100% { transform: translateX(0) rotate(0) scale(1); } 50% { transform: translateX(-18px) rotate(-6deg) scale(1.06); } }
+@keyframes nod { 0%, 100% { transform: rotate(0); } 35% { transform: rotate(5deg) translateY(2px); } 70% { transform: rotate(-2deg); } }
+.mascot.in .bubble { animation: bubblebob 1.2s ease-in-out .7s infinite; }
+@keyframes bubblebob { 0%, 100% { margin-bottom: 0; } 50% { margin-bottom: 6px; } }
+.mascot .bubble { position: absolute; right: 8px; bottom: calc(100% + 10px); z-index: 2; max-width: 80vw; white-space: normal; text-align: center;
+  background: #fff; color: #1a1030; font-weight: 800; font-size: 1rem; padding: .45rem .8rem; border-radius: 16px 16px 4px 16px; border: 2px solid var(--aura);
+  opacity: 0; transform: scale(.6); transform-origin: right bottom; transition: opacity .25s cubic-bezier(.2,1.6,.4,1) .35s, transform .25s cubic-bezier(.2,1.6,.4,1) .35s; box-shadow: 0 0 18px color-mix(in srgb, var(--aura) 60%, transparent); }
+.mascot .bubble::after { content: ""; position: absolute; right: 14px; bottom: -9px; border: 8px solid transparent; border-top-color: var(--aura); border-bottom: 0; }
+.mascot.in .bubble { opacity: 1; transform: scale(1); }
+.mascot.builtin .bubble { right: 20px; }
+/* bubble skins (cosmetics, class b-<id> on .mascot or .mascot-preview) */
+.b-neon .bubble { background: #17102b; color: #fff; border-color: var(--pink); box-shadow: 0 0 6px var(--pink), 0 0 22px color-mix(in srgb, var(--pink) 70%, transparent), inset 0 0 10px color-mix(in srgb, var(--pink) 35%, transparent); }
+.b-neon .bubble::after { border-top-color: var(--pink); }
+.b-glass .bubble { background: rgba(20, 12, 40, .78); color: #fff; border-color: rgba(255,255,255,.55); box-shadow: 0 6px 18px rgba(0,0,0,.5), inset 0 1px 0 rgba(255,255,255,.35); }
+.b-glass .bubble::after { border-top-color: rgba(255,255,255,.55); }
+.b-gold .bubble { background: #2a1d05; color: #ffd54a; border-color: #ffb52e; box-shadow: 0 0 18px rgba(255,181,46,.55), inset 0 0 12px rgba(255,213,74,.2); }
+.b-gold .bubble::after { border-top-color: #ffb52e; }
+
+/* More → Mascot → Style: chip rows and a live preview */
+.style-block { display: grid; gap: .5rem; padding-bottom: .6rem; margin-bottom: .6rem; border-bottom: 1px solid var(--line); }
+.style-preview { position: relative; display: flex; align-items: flex-end; justify-content: center; padding: 2.2rem 0 .4rem; }
+.style-preview .figure { width: 120px; height: 120px; }
+.style-preview .stick { display: block; width: 100%; height: 100%; overflow: visible; }
+.style-preview .bubble { position: absolute; left: 50%; top: 0; transform: translateX(-50%); background: #fff; color: #1a1030; font-weight: 800; font-size: .9rem; padding: .35rem .7rem; border-radius: 14px 14px 14px 4px; border: 2px solid var(--aura); box-shadow: 0 0 14px color-mix(in srgb, var(--aura) 60%, transparent); }
+.style-row { display: grid; gap: .3rem; }
+.style-row .label { font-size: .75rem; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); }
+.style-row .chips { gap: .35rem; }
+.style-row .chip { display: flex; align-items: center; gap: .4rem; min-height: 40px; padding: .25rem .7rem; }
+.style-row .chip.locked { opacity: .45; border-style: dashed; cursor: default; }
+.style-row .chip .unlock { font-size: .65rem; font-weight: 600; color: var(--muted); }
+.style-row .chip .swatch { width: 14px; height: 14px; border-radius: 50%; border: 1px solid rgba(255,255,255,.4); flex: none; }
+
+/* picker thumbnails in More → Mascot */
+.mascot-thumbs { display: flex; gap: .4rem; flex-wrap: wrap; }
+.mascot-thumbs div { position: relative; width: 64px; height: 84px; border-radius: 8px; overflow: hidden; border: 1px solid var(--line-strong); background: #000; }
+.mascot-thumbs img { width: 100%; height: 100%; object-fit: cover; }
+.mascot-thumbs button { position: absolute; top: 2px; right: 2px; width: 22px; height: 22px; border-radius: 50%; border: 0; background: rgba(0,0,0,.7); color: #fff; font-size: .8rem; cursor: pointer; }
+
+/* Hold sheet (ui/impulse.js). Kept in this file because it is the one stylesheet that module set owns; the
+   countdown ring is an inline SVG, the sheet is the normal bottom sheet stretched to the full height. */
+.hold-empty { display: grid; gap: .15rem; padding: .5rem .6rem; border: 1px dashed var(--line-strong); border-radius: 12px; font-size: .85rem; color: var(--muted); }
+.hold-empty b { color: var(--text); }
+.hold-ring { display: block; color: var(--text); }
+.hold-ring.ready { filter: drop-shadow(0 0 8px rgba(195,255,61,.6)); }
+.quest .ico .hold-ring { margin: 0 auto; }
+.quest.tap { cursor: pointer; }
+.modal .sheet.hold-full { min-height: calc(100dvh - 10px); border-radius: 22px 22px 0 0; display: flex; flex-direction: column; }
+.modal .sheet.hold-full > h2:empty { display: none; }
+.hold-sheet { display: flex; flex-direction: column; align-items: stretch; gap: .6rem; flex: 1; padding-top: .4rem; }
+.hold-head { text-align: center; }
+.hold-head h2 { margin: .2rem 0 0; font-size: 1.5rem; }
+.hold-amt { font-size: 2rem; font-weight: 900; letter-spacing: -.02em; color: var(--cyan); text-shadow: 0 0 18px rgba(33,240,255,.4); }
+.hold-ringwrap { display: flex; justify-content: center; margin: .4rem 0 0; }
+.hold-ringwrap .hold-ring { font-variant-numeric: tabular-nums; filter: drop-shadow(0 0 16px rgba(255,181,46,.35)); }
+.hold-ringwrap .hold-ring.ready { filter: drop-shadow(0 0 16px rgba(195,255,61,.55)); }
+.hold-clock { text-align: center; font-weight: 800; font-size: 1.1rem; font-variant-numeric: tabular-nums; }
+.hold-meaning { display: grid; gap: .25rem; padding: .6rem .8rem; border-radius: 12px; background: rgba(255,255,255,.04); border: 1px solid var(--line); }
+.hold-actions { display: grid; gap: .5rem; margin-top: auto; padding-top: .6rem; }
+.center { text-align: center; }

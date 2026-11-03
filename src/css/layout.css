@@ -1,0 +1,60 @@
+/* Top bar and bottom tabs: the only two surfaces that keep backdrop-filter. */
+.topbar {
+  position: sticky; top: 0; z-index: 20;
+  display: flex; align-items: center; gap: var(--s-3);
+  padding: calc(var(--s-3) + env(safe-area-inset-top, 0px)) var(--s-4) var(--s-2);
+  background: linear-gradient(180deg, rgba(7,4,16,.96), rgba(7,4,16,.86));
+  backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--line);
+}
+.brand { font-weight: 800; font-size: 1.25rem; letter-spacing: .04em; display: flex; align-items: center; gap: var(--s-2); white-space: nowrap; }
+.brand-bar {
+  width: 6px; height: 1.3rem; border-radius: 3px; flex: 0 0 auto;
+  background: linear-gradient(180deg, var(--pink), var(--cyan), var(--lime));
+  box-shadow: 0 0 10px rgba(var(--pink-rgb), .8), 0 0 18px rgba(var(--cyan-rgb), .4);
+}
+.brand-sub { color: var(--muted); font-size: .85rem; margin-left: auto; display: flex; align-items: center; gap: var(--s-2); min-width: 0; }
+.view { padding: var(--s-4) var(--s-4) var(--s-5); max-width: 760px; margin: 0 auto; }
+
+.tabs {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 20;
+  height: calc(var(--tabs-h) + env(safe-area-inset-bottom, 0px));
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+  display: grid; grid-template-columns: repeat(7, 1fr);
+  background: rgba(9, 5, 20, .96); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+  border-top: 1px solid var(--line);
+}
+.tabs button {
+  background: none; border: 0; color: var(--muted); font-size: .7rem; font-weight: 600;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px;
+  letter-spacing: .02em; cursor: pointer; padding: 0; min-width: 0; white-space: nowrap; overflow: hidden;
+  transition: color var(--t-fast) var(--ease);
+}
+.tabs button .ico { font-size: 1.25rem; line-height: 1; }
+.tabs button.active { color: var(--cyan); text-shadow: 0 0 10px rgba(var(--cyan-rgb),.6); }
+.tabs button.active .ico { color: var(--pink); text-shadow: 0 0 12px var(--pink); }
+.tabs button:focus-visible { outline-offset: -3px; }
+@media (max-width: 340px) { .tabs button { font-size: .62rem; letter-spacing: 0; } .tabs button .ico { font-size: 1.15rem; } }
+
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s-3); }
+.grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--s-3); }
+@media (max-width: 420px) { .grid3 { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 359px) { .grid2, .field-row, .loan-compare { grid-template-columns: 1fr; } }
+
+/* XP strip in the top bar */
+.xp { display: flex; align-items: center; gap: var(--s-2); position: relative; }
+.xp .lvl { font-weight: 800; color: var(--lime); text-shadow: 0 0 10px rgba(var(--lime-rgb),.6); font-size: .85rem; white-space: nowrap; }
+.xp .bar { width: 64px; height: 7px; flex: 0 0 auto; }
+.xp .streak { color: var(--amber); font-weight: 700; font-size: .85rem; white-space: nowrap; }
+@media (max-width: 340px) { .xp .bar { width: 44px; } }
+
+/* XP fill animation: the bar's glow and jitter scale with how full it is (set from JS via --f) */
+.xp .bar { position: relative; overflow: visible; }
+.xp .bar > i { will-change: width, box-shadow, transform; transition: none; }
+.xp.charging .bar > i { box-shadow: 0 0 calc(4px + 16px * var(--f, 0)) rgba(var(--lime-rgb), calc(.35 + .65 * var(--f, 0))), 0 0 calc(2px + 30px * var(--f, 0)) rgba(var(--cyan-rgb), calc(.6 * var(--f, 0))); filter: brightness(calc(1 + .8 * var(--f, 0))); }
+.xp.burst .bar > i { animation: xpburst .55s ease-out; }
+.xp.burst .lvl { animation: lvlpop .6s var(--ease-pop); }
+@keyframes xpburst { 0% { filter: brightness(2.6); box-shadow: 0 0 30px var(--lime), 0 0 60px var(--cyan), 0 0 90px var(--pink); } 100% { filter: brightness(1); box-shadow: 0 0 10px rgba(var(--lime-rgb),.5); } }
+@keyframes lvlpop { 0% { transform: scale(1); } 40% { transform: scale(1.6); color: #fff; text-shadow: 0 0 18px var(--lime), 0 0 30px var(--pink); } 100% { transform: scale(1); } }
+.xp .gain { position: absolute; right: 0; top: -1.1rem; font-size: .75rem; font-weight: 800; color: var(--lime); text-shadow: 0 0 8px rgba(var(--lime-rgb),.8); animation: gainfloat 1s ease-out forwards; pointer-events: none; }
+@keyframes gainfloat { 0% { opacity: 0; transform: translateY(6px); } 20% { opacity: 1; } 100% { opacity: 0; transform: translateY(-10px); } }

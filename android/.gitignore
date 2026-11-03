@@ -1,0 +1,9 @@
+# Signing material never goes in the repo (see keystore.properties.example)
+keystore.properties
+*.jks
+*.keystore
+# Gradle / IDE output
+.gradle/
+build/
+app/build/
+local.properties

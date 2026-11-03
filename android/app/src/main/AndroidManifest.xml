@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- No INTERNET permission. Notification access is granted by the user in system settings.
+         SEND_SMS is NOT declared here: only the `personal` flavor adds it (src/personal/AndroidManifest.xml),
+         and it is only used when "Send automatically" is switched on in More -> Rewards -> Tell someone.
+         The `store` flavor has no SMS permission at all and always uses the messaging-app composer. -->
+    <application
+        android:allowBackup="false"
+        android:icon="@mipmap/ic_launcher"
+        android:roundIcon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:hardwareAccelerated="true"
+        android:theme="@style/Theme.Glowstick">
+        <activity android:name=".MainActivity" android:exported="true"
+            android:launchMode="singleTask" android:configChanges="orientation|screenSize|keyboardHidden|uiMode">
+            <intent-filter><action android:name="android.intent.action.MAIN" /><category android:name="android.intent.category.LAUNCHER" /></intent-filter>
+        </activity>
+        <service android:name=".NotifListener" android:label="@string/listener_name" android:exported="true"
+            android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE">
+            <intent-filter><action android:name="android.service.notification.NotificationListenerService" /></intent-filter>
+        </service>
+    </application>
+</manifest>

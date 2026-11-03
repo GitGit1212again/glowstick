@@ -1,0 +1,132 @@
+/* Glowstick design tokens. Near-black background, neon accents for edges, bars and labels; body text stays
+   high-contrast. Glow is a budget: only the primary money card and the reward layer get it. */
+:root {
+  /* colour roles */
+  --bg: #070410;
+  --bg-2: #0d0819;
+  --surface-1: #150e2a;                  /* cards */
+  --surface-2: #1d1438;                  /* nested boxes, inputs, buttons */
+  --surface-3: #0a0616;                  /* recessed: input wells, tables */
+  --line: rgba(190, 140, 255, 0.16);
+  --line-strong: rgba(190, 140, 255, 0.38);
+  --text: #f3f0fb;
+  --muted: #b9b0d8;
+  --dim: #877ca9;
+  /* accent set */
+  --pink: #ff2fd2;   --pink-rgb: 255, 47, 210;
+  --cyan: #21f0ff;   --cyan-rgb: 33, 240, 255;
+  --lime: #c3ff3d;   --lime-rgb: 195, 255, 61;
+  --violet: #9b6bff; --violet-rgb: 155, 107, 255;
+  --amber: #ffb52e;  --amber-rgb: 255, 181, 46;
+  --red: #ff4f6e;    --red-rgb: 255, 79, 110;
+  --pink-soft: rgba(var(--pink-rgb), 0.16);
+  --cyan-soft: rgba(var(--cyan-rgb), 0.14);
+  --lime-soft: rgba(var(--lime-rgb), 0.14);
+  --violet-soft: rgba(var(--violet-rgb), 0.18);
+  --amber-soft: rgba(var(--amber-rgb), 0.16);
+  --danger-soft: rgba(var(--red-rgb), 0.16);
+  /* status roles */
+  --ok: var(--lime);      --ok-rgb: var(--lime-rgb);
+  --warn: var(--amber);   --warn-rgb: var(--amber-rgb);
+  --danger: var(--red);   --danger-rgb: var(--red-rgb);
+  --info: var(--cyan);    --info-rgb: var(--cyan-rgb);
+  /* type scale (4 sizes) */
+  --fs-sm: 0.8rem;
+  --fs-md: 1rem;
+  --fs-lg: 1.35rem;
+  --fs-xl: clamp(1.9rem, 9vw, 2.4rem);
+  /* spacing scale */
+  --s-1: 4px;
+  --s-2: 8px;
+  --s-3: 12px;
+  --s-4: 16px;
+  --s-5: 24px;
+  /* radii */
+  --r-sm: 8px;
+  --r-md: 12px;
+  --r-lg: 16px;
+  /* glow levels: box-shadow values tinted by --glow-rgb (set per accent). 0 = none, 1 = primary card, 2 = reward */
+  --glow-rgb: var(--violet-rgb);
+  --glow-0: none;
+  --glow-1: 0 0 0 1px rgba(var(--glow-rgb), 0.16), 0 0 22px rgba(var(--glow-rgb), 0.18);
+  --glow-2: 0 0 0 1px rgba(var(--glow-rgb), 0.28), 0 0 34px rgba(var(--glow-rgb), 0.34), 0 0 70px rgba(var(--glow-rgb), 0.16);
+  --shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+  /* motion */
+  --t-fast: 120ms;
+  --t-med: 250ms;
+  --t-slow: 500ms;
+  --ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --ease-pop: cubic-bezier(0.2, 1.6, 0.4, 1);
+  --font: "Segoe UI", system-ui, -apple-system, Roboto, sans-serif;
+  --mono: "Cascadia Mono", Consolas, "Roboto Mono", monospace;
+  --tabs-h: 64px;
+  --fab-h: 58px;
+  /* legacy aliases still referenced by other modules */
+  --panel: var(--surface-1);
+  --panel-2: var(--surface-2);
+  --radius: var(--r-lg);
+  --radius-sm: var(--r-md);
+}
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+html, body { margin: 0; min-height: 100%; }
+html { font-size: 17px; }
+body {
+  font-family: var(--font);
+  color: var(--text);
+  background: var(--bg);
+  line-height: 1.45;
+  overflow-x: hidden;
+  padding-bottom: calc(var(--tabs-h) + env(safe-area-inset-bottom, 0px));
+}
+/* background wash: two radial gradients on a fixed pseudo-element; no blur filter (expensive on cheap phones) */
+body::before {
+  content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none;
+  background:
+    radial-gradient(60vw 60vw at 100% -10%, rgba(var(--pink-rgb), 0.22), transparent 65%),
+    radial-gradient(70vw 70vw at -10% 105%, rgba(var(--cyan-rgb), 0.16), transparent 65%),
+    var(--bg);
+}
+h1, h2, h3, h4 { margin: 0 0 var(--s-2); font-weight: 650; letter-spacing: .01em; overflow-wrap: anywhere; }
+h2 { font-size: var(--fs-lg); }
+h3 { color: var(--muted); text-transform: uppercase; letter-spacing: .1em; font-size: var(--fs-sm); font-weight: 700; }
+p { margin: var(--s-1) 0 var(--s-3); }
+a { color: var(--cyan); }
+button, input, select, textarea { font: inherit; color: inherit; }
+textarea { resize: vertical; }
+::selection { background: rgba(var(--pink-rgb), .4); }
+.muted { color: var(--muted); }
+.dim { color: var(--dim); }
+.small { font-size: .88rem; }
+.tiny { font-size: var(--fs-sm); }
+.hidden { display: none !important; }
+.right { text-align: right; }
+.center { text-align: center; }
+.row { display: flex; gap: var(--s-2); flex-wrap: wrap; align-items: center; }
+.between { justify-content: space-between; }
+.grow { flex: 1 1 auto; }
+.mt { margin-top: var(--s-4); }
+.mb { margin-bottom: var(--s-4); }
+.mono { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+.num { font-variant-numeric: tabular-nums; }
+.pink { color: var(--pink); }
+.cyan { color: var(--cyan); }
+.lime { color: var(--lime); }
+.violet { color: var(--violet); }
+.amber { color: var(--amber); }
+.danger { color: var(--danger); }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* keyboard focus: cyan ring on everything interactive; pointer focus stays quiet */
+:focus-visible { outline: 2px solid var(--cyan); outline-offset: 2px; border-radius: var(--r-sm); }
+:focus:not(:focus-visible) { outline: none; }
+.field input:focus-visible, .field select:focus-visible, .field textarea:focus-visible { outline: none; }
+
+/* Reduced motion: decorative animation off, state changes stay instant and visible. */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
+  .xp.charging .bar > i { box-shadow: none !important; filter: none !important; transform: none !important; }
+  .mascot img, .mascot .bubble, .mascot.in .bubble { animation: none !important; }
+  .mascot { transition: none !important; }
+  .playcard.back { animation: none !important; }
+  .celebrate .box { animation: none !important; }
+}

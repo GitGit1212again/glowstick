@@ -1,0 +1,8 @@
+# Keep line endings right on every system: the shell scripts must stay LF for macOS/Linux, the Windows scripts CRLF.
+* text=auto
+*.sh text eol=lf
+android/gradlew text eol=lf
+*.bat text eol=crlf
+*.cmd text eol=crlf
+*.png binary
+*.jar binary

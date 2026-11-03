@@ -1,0 +1,33 @@
+# Python / Node / OS noise
+__pycache__/
+*.pyc
+node_modules/
+.DS_Store
+Thumbs.db
+
+# Build output. Rebuild with: python3 build.py --store   (the GitHub Pages files at the repo root are the exception)
+dist/
+android/.gradle/
+android/build/
+android/app/build/
+android/local.properties
+# Generated web bundles that Gradle packages. src/main/assets is where the PERSONAL build is written; never publish it.
+android/app/src/main/assets/
+android/app/src/store/assets/
+
+# Never published: APKs, signing material, machine-specific settings
+*.apk
+*.aab
+*.jks
+*.keystore
+keystore.properties
+local.properties
+google-services.json
+scripts/local-env.ps1
+scripts/local-env.sh
+
+# Never published: personal-build material (pictures, the photo-based icon, the tools that make them)
+src/data/mascots.js
+src/assets/icon-face.png
+tools/bundle_mascots.py
+tools/make_icon_photo.py

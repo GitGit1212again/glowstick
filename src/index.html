@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#070410">
+<title>Glowstick</title>
+<link rel="icon" href="assets/icon.png">
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/layout.css">
+<link rel="stylesheet" href="css/components.css">
+<link rel="stylesheet" href="css/views.css">
+<link rel="stylesheet" href="css/mascot.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="brand"><span class="brand-bar"></span>Glowstick</div>
+  <div class="brand-sub" id="brand-sub"></div>
+</header>
+
+<main id="view" class="view" aria-live="polite"></main>
+
+<nav class="tabs" id="tabs" aria-label="Sections">
+  <button data-tab="home"><span class="ico">◉</span>Home</button>
+  <button data-tab="spend"><span class="ico">▤</span>Spend</button>
+  <button data-tab="bills"><span class="ico">◷</span>Bills</button>
+  <button data-tab="income"><span class="ico">$</span>Income</button>
+  <button data-tab="goals"><span class="ico">◆</span>Goals</button>
+  <button data-tab="loans"><span class="ico">↯</span>Loans</button>
+  <button data-tab="more"><span class="ico">⋯</span>More</button>
+</nav>
+
+<div id="modal" class="modal hidden" role="dialog" aria-modal="true"></div>
+<div id="toast" class="toast hidden" role="status" aria-live="polite"></div>
+
+<script type="module" src="js/main.js"></script>
+</body>
+</html>
